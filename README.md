@@ -1,1 +1,1 @@
-PMON tool for sending command quickly by serial.
+PMON tool for quickly sending command via serial.
