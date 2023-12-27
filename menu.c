@@ -119,15 +119,16 @@ void exe(int index)
     char cmd[128];
     //struct MenuItem *itemSel = &menu[index];
     //snprintf(cmd, sizeof(cmd), "echo \"%s\" > /dev/ttyUSB0",itemSel -> cmd);
-    snprintf(cmd, sizeof(cmd), "echo \"%s\" > /dev/ttyUSB0",menu[index].text);
+    snprintf(cmd, sizeof(cmd), "echo \"%s\" > /dev/ttyUSB0",menu[index].cmd);
     printf("cmd :%s\n",cmd);
+    system("echo \x03 > /dev/ttyUSB0");
     system(cmd);
 }
 
-void listen()
+/*void listen()
 {
-    while()
-}
+    while(1){}
+}*/
 
 void menu_show(int index,int itemCnt)
 {
