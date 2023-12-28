@@ -22,6 +22,8 @@ struct MenuItem menu[] = {
     {1, "Fload", "fload tftp://192.168.1.35/gzrom.bin"},
     {2, "Reboot", "reboot"},
     {3, "Poweroff", "poweroff"},
+    {4, "Ping", "ping 192.168.1.35"},
+    {5, "Break", ""},
 };
 
 int main()
