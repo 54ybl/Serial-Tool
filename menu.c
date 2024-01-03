@@ -9,6 +9,9 @@ void menu_show();
 void exe();
 void listen();
 
+#define SERIAL_PORT "/dev/ttyUSB0"
+
+
 /* Menu struct */
 struct MenuItem{
     int optionNum;
@@ -18,12 +21,12 @@ struct MenuItem{
 
 /* Menu content & command */
 struct MenuItem menu[] = {
-    {0, "Ifconfig", "ifconfig syn0 192.168.1.25"},
-    {1, "Fload", "fload tftp://192.168.1.35/gzrom.bin"},
-    {2, "Reboot", "reboot"},
-    {3, "Poweroff", "poweroff"},
-    {4, "Ping", "ping 192.168.1.35"},
-    {5, "Break", ""},
+    {1, "Ifconfig", "ifconfig syn0 192.168.1.25"},
+    {2, "Fload", "fload tftp://192.168.1.35/gzrom.bin"},
+    {3, "Reboot", "reboot"},
+    {4, "Poweroff", "poweroff"},
+    {5, "Ping", "ping 192.168.1.35"},
+    {6, "Break", ""},
 };
 
 int main()
@@ -59,7 +62,7 @@ int main()
 
 		switch(input){
 		    case 'B':
-			//printf("Up\n");
+			//printf("Down\n");
 			if(index >= (itemCnt - 1)){
 			    index = 0;
 			    break;
@@ -67,7 +70,7 @@ int main()
 			index++;
 			break;
 		    case 'A':
-			//printf("Down\n");
+			//printf("Up\n");
 			if(index <= 0){
 			    index = (itemCnt - 1);
 			    break;
@@ -87,8 +90,8 @@ int main()
 	    }
 	}
 	else if(input >= '0' && input <= '9'){
-	    printf("num: %d\n",input - '0');
-	    index = input - '0';
+	    //printf("num: %d\n",input - '0');
+	    index = input - '0' - 1;
 	    menu_show(index, itemCnt);
 	}else{
 	    printf("%c pressed\n", input);
@@ -121,7 +124,7 @@ void exe(int index)
     char cmd[128];
     //struct MenuItem *itemSel = &menu[index];
     //snprintf(cmd, sizeof(cmd), "echo \"%s\" > /dev/ttyUSB0",itemSel -> cmd);
-    snprintf(cmd, sizeof(cmd), "echo \"%s\" > /dev/ttyUSB0",menu[index].cmd);
+    snprintf(cmd, sizeof(cmd), "echo \"%s\" > %s",menu[index].cmd,SERIAL_PORT);
     printf("cmd :%s\n",cmd);
     system("echo \x03 > /dev/ttyUSB0");
     system(cmd);
