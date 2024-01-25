@@ -14,19 +14,22 @@ void listen();
 
 /* Menu struct */
 struct MenuItem{
-    int optionNum;
+    //int optionNum;
     char text[50];
     char cmd[50];
 };
 
 /* Menu content & command */
 struct MenuItem menu[] = {
-    {1, "Ifconfig", "ifconfig syn0 192.168.1.25"},
-    {2, "Fload", "fload tftp://192.168.1.35/gzrom.bin"},
-    {3, "Reboot", "reboot"},
-    {4, "Poweroff", "poweroff"},
-    {5, "Ping", "ping 192.168.1.35"},
-    {6, "Break", ""},
+    {"Ifconfig", "ifconfig syn0 192.168.1.25"},
+    {"Fload", "fload tftp://192.168.1.35/gzrom.bin"},
+    {"Load", "load tftp://192.168.1.35/vmlinuz"},
+    {"Initrd", "initrd tftp://192.168.1.35/rootfs.cpio.gz"},
+    {"Call kernel", "g console=ttyS0,115200"},
+    {"Ping", "ping 192.168.1.35"},
+    {"Reboot", "reboot"},
+    {"Poweroff", "poweroff"},
+    {"Break", ""},
 };
 
 int main()
@@ -125,7 +128,7 @@ void exe(int index)
     //struct MenuItem *itemSel = &menu[index];
     //snprintf(cmd, sizeof(cmd), "echo \"%s\" > /dev/ttyUSB0",itemSel -> cmd);
     snprintf(cmd, sizeof(cmd), "echo \"%s\" > %s",menu[index].cmd,SERIAL_PORT);
-    printf("cmd :%s\n",cmd);
+    printf("cmd: %s\n",cmd);
     system("echo \x03 > /dev/ttyUSB0");
     system(cmd);
 }
@@ -140,9 +143,9 @@ void menu_show(int index,int itemCnt)
     system("clear");
     for (int i = 0; i < itemCnt; ++i){
 	if(i == index){
-	    printf("\033[31m%d.%s <\033[0m\n",menu[i].optionNum,menu[i].text);
+	    printf("\033[31m%d.%s <\033[0m\n",i + 1,menu[i].text);
 	}else{
-	    printf("%d.%s\n",menu[i].optionNum,menu[i].text);
+	    printf("%d.%s\n",i + 1,menu[i].text);
 	}
     }
 }
