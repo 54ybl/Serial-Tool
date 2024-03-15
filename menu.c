@@ -11,7 +11,6 @@ void listen();
 
 #define SERIAL_PORT "/dev/ttyUSB0"
 
-
 /* Menu struct */
 struct MenuItem{
     //int optionNum;
@@ -22,9 +21,9 @@ struct MenuItem{
 /* Menu content & command */
 struct MenuItem menu[] = {
     {"Ifconfig", "ifconfig syn0 192.168.1.25"},
-    {"Fload", "fload tftp://192.168.1.35/gzrom.bin"},
-    {"Load", "load tftp://192.168.1.35/vmlinuz"},
-    {"Initrd", "initrd tftp://192.168.1.35/rootfs.cpio.gz"},
+    {"Fload", "fload http://192.168.1.35/gzrom.bin"},
+    {"Load", "load http://192.168.1.35/vmlinuz"},
+    {"Initrd", "initrd http://192.168.1.35/rootfs.cpio.gz"},
     {"Call kernel", "g console=ttyS0,115200"},
     {"Ping", "ping 192.168.1.35"},
     {"Reboot", "reboot"},
@@ -34,6 +33,10 @@ struct MenuItem menu[] = {
 
 struct MenuItem kmenu[] = {
     {"Ifconfig", "ifconfig eth0 192.168.1.25"},
+    {"Mount", "mount /dev/mmcblk0p1 /mnt\ncd /mnt"},
+    {"TFTP", "tftp -gr 192.168.1.35"},
+    {"WGET", "rm m\nwget http://192.168.1.35/m\nchmod 777 m"},
+    {"2P500", "root\nifconfig eth0 192.168.1.25\nping 192.168.1.35"},
     {"Ping", "ping 192.168.1.35"},
     {"Reboot", "reboot"},
     {"Poweroff", "poweroff"},
@@ -57,13 +60,18 @@ int main()
 	/* Read Enter */
 	read(STDIN_FILENO, &input, 1);
 	if (input == '\n') {
-	    exe(index);
+	    exe(index, jinx);
 	}
 
 	/* Read q */
 	else if (input == 'q') {
 	    system("clear");
 	    break;
+	}
+
+	/* Read c */
+	else if (input == 'c'){
+	    exe(8,0);
 	}
 
 	/* Read Up/Down */
